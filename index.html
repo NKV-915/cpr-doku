@@ -26,7 +26,8 @@
         }
 
         * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
-        body {
+        
+        html, body {
             margin: 0;
             padding: 0;
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
@@ -35,6 +36,9 @@
             height: 100vh;
             width: 100vw;
             overflow: hidden;
+        }
+
+        body {
             display: flex;
             flex-direction: column;
         }
@@ -286,12 +290,12 @@
         .modal-btn:active { background: #30363d; }
         .modal-btn-close { background: #30363d; color: #8b949e; padding: 10px; border-radius: 8px; border: none; width: 100%; cursor: pointer; }
 
-        /* REPORT MODAL (PDF) */
+        /* REPORT OVERLAY (BILDSCHIRMANZEIGE) */
         #report-overlay {
             position: fixed;
             top: 0; left: 0; width: 100vw; height: 100vh;
-            background: #fff;
-            color: #000;
+            background: #ffffff;
+            color: #111111;
             display: none;
             flex-direction: column;
             z-index: 10000;
@@ -303,7 +307,7 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            border-bottom: 3px solid #000;
+            border-bottom: 2px solid #000;
             padding-bottom: 12px;
             margin-bottom: 20px;
         }
@@ -313,29 +317,105 @@
             margin-bottom: 25px;
         }
         .traffic-table th, .traffic-table td {
-            border: 1px solid #ccc;
-            padding: 10px 14px;
+            border: 1px solid #d0d7de;
+            padding: 9px 12px;
             text-align: left;
-            font-size: 14px;
+            font-size: 13px;
         }
-        .traffic-table th { background: #f0f0f0; }
+        .traffic-table th { background: #f6f8fa; color: #000; }
         .traffic-pill {
             display: inline-block;
-            padding: 4px 10px;
-            border-radius: 12px;
+            padding: 3px 8px;
+            border-radius: 10px;
             font-weight: bold;
-            color: #fff;
-            font-size: 12px;
+            color: #ffffff !important;
+            font-size: 11px;
+            text-align: center;
         }
-        .pill-green { background: #28a745; }
-        .pill-red { background: #dc3545; }
-        .pill-gray { background: #6c757d; }
+        .pill-green { background: #238636 !important; }
+        .pill-red { background: #da3633 !important; }
+        .pill-gray { background: #6e7681 !important; }
+
+        /* ======================================================== */
+        /* VOLLSTÄNDIGER, SAUBERER DRUCK- & MULTI-PAGE-PDF-MODUS    */
+        /* ======================================================== */
+        @page {
+            size: A4 portrait;
+            margin: 15mm 12mm 15mm 12mm;
+        }
 
         @media print {
-            body { background: #fff !important; color: #000 !important; }
-            #start-overlay, #app-header, #main-container, .modal-overlay { display: none !important; }
-            #report-overlay { display: block !important; position: static !important; width: 100% !important; height: auto !important; padding: 0 !important; }
-            .no-print { display: none !important; }
+            html, body {
+                height: auto !important;
+                min-height: 100% !important;
+                width: 100% !important;
+                overflow: visible !important;
+                position: static !important;
+                display: block !important;
+                background: #ffffff !important;
+                color: #000000 !important;
+                -webkit-print-color-adjust: exact !important;
+                print-color-adjust: exact !important;
+            }
+
+            /* Verstecke App-Elemente */
+            #start-overlay,
+            #app-header,
+            #main-container,
+            .modal-overlay,
+            .no-print {
+                display: none !important;
+            }
+
+            /* Report über ganze Seitenbreite und fortlaufende Seiten */
+            #report-overlay {
+                display: block !important;
+                position: static !important;
+                width: 100% !important;
+                height: auto !important;
+                min-height: auto !important;
+                overflow: visible !important;
+                padding: 0 !important;
+                margin: 0 !important;
+                background: #ffffff !important;
+                color: #000000 !important;
+                box-shadow: none !important;
+            }
+
+            /* Tabellenumbruch steuern: Keine abgeschnittenen Zeilen */
+            .traffic-table {
+                width: 100% !important;
+                page-break-inside: auto !important;
+                border: 1px solid #999 !important;
+            }
+            .traffic-table tr {
+                page-break-inside: avoid !important;
+                page-break-after: auto !important;
+            }
+            .traffic-table th, 
+            .traffic-table td {
+                color: #000000 !important;
+                border: 1px solid #999 !important;
+                padding: 7px 10px !important;
+            }
+
+            /* Überschriften vor Seitenumbruch schützen */
+            h1, h2, h3, h4 {
+                page-break-after: avoid !important;
+                color: #000000 !important;
+                margin-top: 18px !important;
+                margin-bottom: 8px !important;
+            }
+
+            /* Ampelfarben im PDF zwingend beibehalten */
+            .traffic-pill {
+                color: #ffffff !important;
+                -webkit-print-color-adjust: exact !important;
+                print-color-adjust: exact !important;
+            }
+            .pill-green { background: #238636 !important; }
+            .pill-red { background: #da3633 !important; }
+            .pill-gray { background: #6e7681 !important; }
         }
     </style>
 </head>
@@ -358,7 +438,6 @@
             </div>
         </div>
         <div style="display: flex; gap: 8px; align-items: center;">
-            <!-- HANDS-OFF TIMER TOGGLE BUTTON -->
             <button id="btn-handsoff" class="modal-btn" style="background:#da3633; color:#fff;" onclick="toggleHandsOff()">⏱️ Hands-Off Start</button>
             <button class="modal-btn" style="background:#d29922; color:#000;" onclick="openFlagModal()">🚩 Notiz</button>
             <button class="modal-btn" style="background:var(--primary);" onclick="openReport()">📊 Protokoll &amp; PDF</button>
@@ -383,13 +462,11 @@
                         <span class="btn-desc">Startzeitpunkt für Benchmark-Berechnungen</span>
                     </button>
 
-                    <!-- 2. BEWUSSTSEINSKONTROLLE OHNE POP-UP -->
                     <button class="btn-action border-blue" onclick="logBewusstseinskontrolle()">
                         <span>(2) Bewusstseinskontrolle</span>
                         <span class="btn-desc">Ansprechen, Berühren, Schmerzreiz</span>
                     </button>
 
-                    <!-- 3. ATEMKONTROLLE OHNE POP-UP -->
                     <button class="btn-action border-blue" onclick="logAtemkontrolle()">
                         <span>(3) Atemkontrolle</span>
                         <span class="btn-desc">Atemwege beurteilen (max. 10 s)</span>
@@ -568,11 +645,11 @@
     <div id="report-overlay">
         <div class="report-header">
             <div>
-                <h1 style="margin: 0; font-size: 26px;">CPR Auswertungs- &amp; Prüfungsprotokoll</h1>
-                <p style="margin: 4px 0 0 0; color: #555; font-size: 14px;">Basic Life Support, Halbautomatischer Defibrillator &amp; SOP 915 Spielfeld</p>
+                <h1 style="margin: 0; font-size: 24px;">CPR Auswertungs- &amp; Prüfungsprotokoll</h1>
+                <p style="margin: 4px 0 0 0; color: #444; font-size: 13px;">Basic Life Support, Halbautomatischer Defibrillator &amp; SOP 915 Spielfeld</p>
             </div>
             <div class="no-print">
-                <button class="modal-btn" style="background:#28a745; margin-right: 10px;" onclick="window.print()">🖨️ Als PDF drucken / sichern</button>
+                <button class="modal-btn" style="background:#28a745; margin-right: 8px;" onclick="window.print()">🖨️ Als PDF drucken / sichern</button>
                 <button class="modal-btn" style="background:#333;" onclick="closeReport()">✕ Schließen</button>
             </div>
         </div>
@@ -596,7 +673,7 @@
         <table class="traffic-table">
             <thead>
                 <tr>
-                    <th style="width: 100px;">Zeit (Relativ)</th>
+                    <th style="width: 90px;">Zeit</th>
                     <th>Maßnahme / Ereignis</th>
                     <th>Bewertung / Detail</th>
                 </tr>
@@ -698,12 +775,11 @@
             document.getElementById(id).style.display = "none";
         }
 
-        // HANDS-OFF ZEITEN TOGGLE (1. Klick Start, 2. Klick Stopp)
+        // HANDS-OFF ZEITEN TOGGLE
         function toggleHandsOff() {
             const btn = document.getElementById("btn-handsoff");
 
             if (!isHandsOffActive) {
-                // STARTEN
                 isHandsOffActive = true;
                 handsOffStartTime = Date.now();
                 btn.classList.add("handsoff-active");
@@ -715,14 +791,12 @@
                 }, 1000);
 
             } else {
-                // STOPPEN & LOGGEN
                 isHandsOffActive = false;
                 clearInterval(handsOffInterval);
                 const duration = Math.round((Date.now() - handsOffStartTime) / 1000);
                 btn.classList.remove("handsoff-active");
                 btn.innerText = "⏱️ Hands-Off Start";
 
-                // Beurteilung: > 5 Sekunden gilt als nicht algorithmuskonforme Hands-Off-Zeit (KO-Gefahr)
                 const isOverLimit = duration > 5;
                 const status = isOverLimit ? "status-bad" : "status-ok";
                 const note = isOverLimit 
@@ -979,7 +1053,7 @@
             let medVal = `Adr: ${adrenalineCount}x, Amio: ${amiodaroneTotal}mg`;
             addTrafficRow(trafficBody, "Medikamenten-Algorithmus", "Nach 3. Schock & 3-5 min Intervall", medVal, medStatus, medText);
 
-            // TIMELINE
+            // TIMELINE (chronologisch aufsteigend)
             const reversedEntries = [...logEntries].reverse();
             reversedEntries.forEach(e => {
                 const tr = document.createElement("tr");
