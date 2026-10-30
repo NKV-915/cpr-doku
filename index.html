@@ -17,7 +17,6 @@
             --text-main: #f0f6fc;
             --text-muted: #8b949e;
             --primary: #1f6feb;
-            --primary-hover: #388bfd;
             --success: #238636;
             --danger: #da3633;
             --warning: #d29922;
@@ -39,10 +38,7 @@
             overflow: hidden;
         }
 
-        body {
-            display: flex;
-            flex-direction: column;
-        }
+        body { display: flex; flex-direction: column; }
 
         /* START OVERLAY */
         #start-overlay {
@@ -82,7 +78,7 @@
             flex-shrink: 0;
         }
         #timer-display {
-            font-family: 'SF Mono', SFMono-Regular, Consolas, 'Liberation Mono', Menlo, monospace;
+            font-family: 'SF Mono', Consolas, Menlo, monospace;
             font-size: 30px;
             font-weight: 900;
             color: #58a6ff;
@@ -103,7 +99,6 @@
             white-space: nowrap;
         }
 
-        /* HANDS OFF BUTTON ACTIVE ANIMATION */
         .handsoff-active {
             background: #ff0000 !important;
             color: #fff !important;
@@ -115,7 +110,6 @@
             to { transform: scale(1.04); box-shadow: 0 0 25px rgba(255, 0, 0, 1); }
         }
 
-        /* MAIN TWO-COLUMN SPLIT FOR iPAD LANDSCAPE */
         #main-container {
             display: flex;
             flex-grow: 1;
@@ -123,7 +117,6 @@
             overflow: hidden;
         }
 
-        /* LEFT: ACTION BOARD */
         #action-board {
             width: 63%;
             display: flex;
@@ -132,7 +125,6 @@
             background: #0f141c;
         }
 
-        /* TAB NAVIGATION */
         .tab-bar {
             display: flex;
             background: var(--card-bg);
@@ -164,7 +156,6 @@
         }
         .tab-content.active { display: block; }
 
-        /* BUTTON GRIDS */
         .grid-buttons {
             display: grid;
             grid-template-columns: repeat(2, 1fr);
@@ -185,12 +176,11 @@
             justify-content: space-between;
             min-height: 74px;
             touch-action: manipulation;
-            transition: background 0.15s, border-color 0.15s;
+            transition: background 0.15s;
         }
-        .btn-action:active { background: #21262d; border-color: #8b949e; transform: scale(0.98); }
+        .btn-action:active { background: #21262d; transform: scale(0.98); }
         .btn-action .btn-desc { font-size: 11px; color: var(--text-muted); font-weight: 400; margin-top: 3px; }
         
-        /* THEMATIC ACCENTS */
         .border-green { border-left: 6px solid var(--success) !important; }
         .border-blue  { border-left: 6px solid var(--primary) !important; }
         .border-red   { border-left: 6px solid var(--danger) !important; }
@@ -198,7 +188,6 @@
         .border-purple{ border-left: 6px solid var(--purple) !important; }
         .border-teal  { border-left: 6px solid var(--teal) !important; }
 
-        /* RIGHT: LOG & AUDIT TIMELINE */
         #timeline-panel {
             width: 37%;
             display: flex;
@@ -238,12 +227,7 @@
             justify-content: space-between;
             align-items: center;
         }
-        .log-time {
-            font-family: monospace;
-            font-weight: bold;
-            color: #58a6ff;
-            font-size: 13px;
-        }
+        .log-time { font-family: monospace; font-weight: bold; color: #58a6ff; font-size: 13px; }
         .log-status-badge {
             font-size: 11px;
             font-weight: 800;
@@ -257,7 +241,6 @@
         .log-msg { font-weight: 600; color: #f0f6fc; }
         .log-note { font-size: 12px; color: #e3b341; font-style: italic; }
 
-        /* MODALS */
         .modal-overlay {
             position: fixed;
             top: 0; left: 0; width: 100vw; height: 100vh;
@@ -293,7 +276,6 @@
         .modal-btn:active { background: #30363d; }
         .modal-btn-close { background: #30363d; color: #8b949e; padding: 10px; border-radius: 8px; border: none; width: 100%; cursor: pointer; }
 
-        /* REPORT OVERLAY (BILDSCHIRMANZEIGE) */
         #report-overlay {
             position: fixed;
             top: 0; left: 0; width: 100vw; height: 100vh;
@@ -339,14 +321,7 @@
         .pill-red { background: #da3633 !important; }
         .pill-gray { background: #6e7681 !important; }
 
-        /* ======================================================== */
-        /* MULTI-PAGE PDF & PRINT EXPORT STYLES                    */
-        /* ======================================================== */
-        @page {
-            size: A4 portrait;
-            margin: 15mm 12mm 15mm 12mm;
-        }
-
+        @page { size: A4 portrait; margin: 15mm 12mm 15mm 12mm; }
         @media print {
             html, body {
                 height: auto !important;
@@ -360,15 +335,7 @@
                 -webkit-print-color-adjust: exact !important;
                 print-color-adjust: exact !important;
             }
-
-            #start-overlay,
-            #app-header,
-            #main-container,
-            .modal-overlay,
-            .no-print {
-                display: none !important;
-            }
-
+            #start-overlay, #app-header, #main-container, .modal-overlay, .no-print { display: none !important; }
             #report-overlay {
                 display: block !important;
                 position: static !important;
@@ -382,35 +349,11 @@
                 color: #000000 !important;
                 box-shadow: none !important;
             }
-
-            .traffic-table {
-                width: 100% !important;
-                page-break-inside: auto !important;
-                border: 1px solid #999 !important;
-            }
-            .traffic-table tr {
-                page-break-inside: avoid !important;
-                page-break-after: auto !important;
-            }
-            .traffic-table th, 
-            .traffic-table td {
-                color: #000000 !important;
-                border: 1px solid #999 !important;
-                padding: 7px 10px !important;
-            }
-
-            h1, h2, h3, h4 {
-                page-break-after: avoid !important;
-                color: #000000 !important;
-                margin-top: 18px !important;
-                margin-bottom: 8px !important;
-            }
-
-            .traffic-pill {
-                color: #ffffff !important;
-                -webkit-print-color-adjust: exact !important;
-                print-color-adjust: exact !important;
-            }
+            .traffic-table { width: 100% !important; page-break-inside: auto !important; border: 1px solid #999 !important; }
+            .traffic-table tr { page-break-inside: avoid !important; page-break-after: auto !important; }
+            .traffic-table th, .traffic-table td { color: #000000 !important; border: 1px solid #999 !important; padding: 7px 10px !important; }
+            h1, h2, h3, h4 { page-break-after: avoid !important; color: #000000 !important; margin-top: 18px !important; margin-bottom: 8px !important; }
+            .traffic-pill { color: #ffffff !important; -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; }
             .pill-green { background: #238636 !important; }
             .pill-red { background: #da3633 !important; }
             .pill-gray { background: #6e7681 !important; }
@@ -419,13 +362,13 @@
 </head>
 <body>
 
-    <!-- SCENARIO START OVERLAY -->
+    <!-- START OVERLAY -->
     <div id="start-overlay">
         <h1 style="color: #fff; font-size: 34px; margin-bottom: 25px; letter-spacing: 1px;">🚨 CPR Szenario-Dokumentation</h1>
         <button id="btn-start-scenario" onclick="startScenario()">SZENARIO STARTEN</button>
     </div>
 
-    <!-- HEADER / TIMER, STATS & CONTROLS -->
+    <!-- HEADER -->
     <header id="app-header">
         <div style="display: flex; align-items: center; gap: 14px;">
             <div id="timer-display">00:00</div>
@@ -448,7 +391,7 @@
     <!-- MAIN TWO-COLUMN VIEW -->
     <div id="main-container">
         
-        <!-- LEFT: ACTION BOARD WITH TABS -->
+        <!-- LEFT: ACTION BOARD -->
         <div id="action-board">
             <div class="tab-bar">
                 <button class="tab-btn active" onclick="switchTab('med')">🩺 Medizinische Aspekte</button>
@@ -483,25 +426,21 @@
                         <span class="btn-desc">Sauerstoffversorgung verifizieren</span>
                     </button>
 
-                    <!-- 6a: ERSTE ANALYSE (MIT BENCHMARK) -->
                     <button class="btn-action border-orange" onclick="openAnalysisModal(true)">
                         <span>(6a) Erste Rhythmusanalyse</span>
                         <span class="btn-desc">Benchmark: &lt; 1 min ab Eintreffen</span>
                     </button>
 
-                    <!-- 6b: WEITERE ANALYSE / RHYTHMUSCHECK -->
                     <button class="btn-action border-orange" onclick="openAnalysisModal(false)">
                         <span>(6b) Folgeanalyse (Rhythmuscheck)</span>
                         <span class="btn-desc">Abfrage Schockbar vs. Nicht-schockbar</span>
                     </button>
 
-                    <!-- 7: SCHOCK -->
                     <button class="btn-action border-red" onclick="logShockDelivered()">
                         <span>(7) ⚡ Schock abgegeben</span>
                         <span class="btn-desc">Inkl. Algorithmus-Zähler</span>
                     </button>
 
-                    <!-- 7b: VECTOR CHANGE -->
                     <button class="btn-action border-teal" onclick="logVectorChange()">
                         <span>(7b) 🔀 Vector Change</span>
                         <span class="btn-desc">Indiziert nach 3. erfolglosem Schock</span>
@@ -544,7 +483,7 @@
                 </div>
             </div>
 
-            <!-- TAB 2: TAKTISCHE ASPEKTE (SOP 915) -->
+            <!-- TAB 2: TAKTISCHE ASPEKTE -->
             <div id="tab-tactical" class="tab-content">
                 <div class="grid-buttons">
                     <button class="btn-action border-orange" onclick="logTactical('Funkspruch: CPR am Feld', 'status-ok', 'Sofort nach Beginn HDM abgesetzt')">
@@ -575,7 +514,7 @@
             </div>
         </div>
 
-        <!-- RIGHT: LIVE TIMELINE & LOG -->
+        <!-- RIGHT: TIMELINE -->
         <div id="timeline-panel">
             <div class="timeline-header">
                 <span>📋 EINSATZ-TIMELINE</span>
@@ -590,7 +529,7 @@
 
     </div>
 
-    <!-- MODAL: ANALYSE ERGEBNIS -->
+    <!-- MODAL: ANALYSE -->
     <div id="modal-analysis" class="modal-overlay">
         <div class="modal-box">
             <h3 id="modal-analysis-title">Rhythmusanalyse</h3>
@@ -607,7 +546,7 @@
         </div>
     </div>
 
-    <!-- MODAL: ERSTE BEATMUNG -->
+    <!-- MODAL: BEATMUNG -->
     <div id="modal-vent" class="modal-overlay">
         <div class="modal-box">
             <h3>Erste Beatmung</h3>
@@ -620,7 +559,7 @@
         </div>
     </div>
 
-    <!-- MODAL: WEITERES AIRWAYMANAGEMENT -->
+    <!-- MODAL: AIRWAY -->
     <div id="modal-airway" class="modal-overlay">
         <div class="modal-box">
             <h3>Atemwegsmanagement wählen</h3>
@@ -662,7 +601,7 @@
         </div>
     </div>
 
-    <!-- MODAL: FLAG / NOTIZ -->
+    <!-- MODAL: NOTIZ -->
     <div id="modal-flag" class="modal-overlay">
         <div class="modal-box">
             <h3>🚩 Notiz / Beobachtung</h3>
@@ -698,9 +637,7 @@
                     <th>Ergebnis</th>
                 </tr>
             </thead>
-            <tbody id="report-traffic-body">
-                <!-- Dynamisch generiert -->
-            </tbody>
+            <tbody id="report-traffic-body"></tbody>
         </table>
 
         <h3>📋 Chronologisches Einsatz-Protokoll</h3>
@@ -712,9 +649,7 @@
                     <th>Bewertung / Detail</th>
                 </tr>
             </thead>
-            <tbody id="report-timeline-body">
-                <!-- Dynamisch generiert -->
-            </tbody>
+            <tbody id="report-timeline-body"></tbody>
         </table>
     </div>
 
@@ -731,19 +666,16 @@
         let infusionCount = 0;
         let lastAdrenalineTime = null;
 
-        // RHYTHMUS & VECTOR CHANGE
         let currentRhythmCategory = null; 
         let isFirstAnalysisPending = false;
         let vectorChangeDone = false;
         let vectorChangeShockAt = null;
 
-        // HANDS-OFF LOGIK
         let isHandsOffActive = false;
         let handsOffStartTime = 0;
         let handsOffInterval = null;
         let handsOffList = [];
 
-        // BENCHMARKS
         let logEntries = [];
         let benchmarks = {
             bewusstsein: null,
@@ -816,7 +748,6 @@
             document.getElementById(id).style.display = "none";
         }
 
-        // HANDS-OFF TOGGLE (Ohne die Wörter Start / Stop)
         function toggleHandsOff() {
             const btn = document.getElementById("btn-handsoff");
 
@@ -849,25 +780,21 @@
             }
         }
 
-        // (1) EINTREFFEN
         function logArrivedPatient() {
             arrivedTime = elapsedSeconds;
             logEntry("Eintreffen beim Patienten", "status-ok", "Referenzzeitpunkt für Benchmarks gesetzt");
         }
 
-        // (2) BEWUSSTSEINSKONTROLLE
         function logBewusstseinskontrolle() {
             benchmarks.bewusstsein = true;
             logEntry("Bewusstseinskontrolle durchgeführt", "status-ok", "Ansprechen, Berühren, Schmerzreiz");[cite: 1]
         }
 
-        // (3) ATEMKONTROLLE
         function logAtemkontrolle() {
             benchmarks.atmung = true;
             logEntry("Atemkontrolle durchgeführt", "status-ok", "Atemwege freigemacht & max. 10s beurteilt");[cite: 1]
         }
 
-        // (4) BEGINN HDM
         function logHdmStart() {
             if (arrivedTime === null) {
                 logEntry("Beginn HDM", "status-bad", "Achtung: Eintreffen beim Patienten wurde vorher nicht dokumentiert!");
@@ -882,7 +809,6 @@
             logEntry("Beginn Herzdruckmassage (HDM)", status, note);[cite: 1, 3]
         }
 
-        // (5) ERSTE BEATMUNG
         function openVentilationModal() {
             document.getElementById("modal-vent").style.display = "flex";
         }
@@ -894,7 +820,6 @@
             logEntry("Erste Beatmung", status, note);
         }
 
-        // (6a & 6b) RHYTHMUSANALYSEN
         function openAnalysisModal(isFirst) {
             isFirstAnalysisPending = isFirst;
             document.getElementById("modal-analysis-title").innerText = isFirst ? "Erste Rhythmusanalyse" : "Folgeanalyse (Rhythmuscheck)";[cite: 1]
@@ -905,7 +830,6 @@
             closeModal('modal-analysis');
             currentRhythmCategory = shockAdvised ? 'shockable' : 'non_shockable';
             
-            // Header Pfad aktualisieren: 1 = Schockbar, 2 = Nicht-schockbar
             const rBadge = document.getElementById("val-rhythm");
             if (shockAdvised) {
                 rBadge.innerText = "1";
@@ -933,14 +857,12 @@
             }
         }
 
-        // (7) SCHOCK
         function logShockDelivered() {
             shockCount++;
             document.getElementById("val-shocks").innerText = shockCount;
             logEntry(`Defibrillation: Schock #${shockCount} abgegeben`, "status-ok", `Gesamtschocks: ${shockCount}`);[cite: 1]
         }
 
-        // (7b) VECTOR CHANGE (Nach Schock 3 = korrekt, Schock 4+ = verspätet)
         function logVectorChange() {
             vectorChangeDone = true;
             vectorChangeShockAt = shockCount;
@@ -969,12 +891,10 @@
             logEntry("🔀 Vector Change durchgeführt", status, note);
         }
 
-        // (8) WECHSEL HDM
         function logHdmSwitch() {
             logEntry("Turnuswechsel Herzdruckmassage", "status-ok", "Helferwechsel durchgeführt");[cite: 1, 2]
         }
 
-        // (9) WEITERES AIRWAYMANAGEMENT
         function openAirwayModal() {
             document.getElementById("modal-airway").style.display = "flex";
         }
@@ -983,7 +903,6 @@
             logEntry(`Airwaymanagement: ${toolName}`, "status-ok", "Atemweg gesichert / optimiert");[cite: 1, 2]
         }
 
-        // (12) MEDIKAMENTE & INFUSION
         function openMedsModal() {
             document.getElementById("modal-meds").style.display = "flex";
         }
@@ -1070,7 +989,6 @@
             logEntry(`Medikamentengabe: ${medName}`, status, note);
         }
 
-        // (14) ROSC
         function openRoscModal() {
             document.getElementById("modal-rosc").style.display = "flex";
         }
@@ -1079,7 +997,6 @@
             logEntry(`Kreislaufstabilisierung: ${type}`, "status-ok", "Spontankreislauf erfasst");[cite: 2]
         }
 
-        // TAKTISCH (SOP 915)
         function logTactical(msg, status, note) {
             logEntry(msg, status, note);
         }
@@ -1100,7 +1017,6 @@
             logEntry(title, status, note);
         }
 
-        // NOTIZ
         function openFlagModal() {
             document.getElementById("modal-flag").style.display = "flex";
         }
@@ -1113,7 +1029,6 @@
             closeModal('modal-flag');
         }
 
-        // SZENARIO BEENDEN
         function endScenario() {
             if (isHandsOffActive) {
                 toggleHandsOff();
@@ -1123,13 +1038,11 @@
             openReport();
         }
 
-        // ALLES ZURÜCKSETZEN & ZUM ANFANGSMENÜ
         function resetToStartMenu() {
             closeReport();
             clearInterval(timerInterval);
             clearInterval(handsOffInterval);
 
-            // Variablen zurücksetzen
             scenarioStartTime = null;
             timerInterval = null;
             elapsedSeconds = 0;
@@ -1161,7 +1074,6 @@
                 medicationErrors: []
             };
 
-            // DOM-Elemente zurücksetzen
             document.getElementById("timer-display").innerText = "00:00";
             document.getElementById("val-rhythm").innerText = "?";
             document.getElementById("val-rhythm").style.color = "#8b949e";
@@ -1179,18 +1091,15 @@
             document.getElementById("log-list").innerHTML = '<div style="color: #666; text-align: center; margin-top: 30px; font-size: 14px;">Warte auf Szenario-Start...</div>';
             document.getElementById("log-count").innerText = "0 Einträge";
 
-            // Start Overlay wieder anzeigen
             document.getElementById("start-overlay").style.display = "flex";
         }
 
-        // PROTOKOLL / REPORT RENDERING
         function openReport() {
             const trafficBody = document.getElementById("report-traffic-body");
             const timelineBody = document.getElementById("report-timeline-body");
             trafficBody.innerHTML = "";
             timelineBody.innerHTML = "";
 
-            // BENCHMARK 1: HDM-Start
             let hdmStatus = "pill-gray", hdmText = "Nicht erfasst", hdmVal = "--";
             if (benchmarks.hdmStart) {
                 hdmStatus = benchmarks.hdmStart.ok ? "pill-green" : "pill-red";
@@ -1199,7 +1108,6 @@
             }
             addTrafficRow(trafficBody, "Beginn HDM ab Eintreffen", "< 30 Sekunden", hdmVal, hdmStatus, hdmText);
 
-            // BENCHMARK 2: Erste Analyse
             let anaStatus = "pill-gray", anaText = "Nicht erfasst", anaVal = "--";
             if (benchmarks.analyse) {
                 anaStatus = benchmarks.analyse.ok ? "pill-green" : "pill-red";
@@ -1209,7 +1117,6 @@
             }
             addTrafficRow(trafficBody, "Erste Rhythmusanalyse", "< 60 Sekunden (1 Min.)", anaVal, anaStatus, anaText);
 
-            // BENCHMARK 3: Vector Change
             let vcStatus = "pill-gray", vcText = "Nicht indiziert (< 3 Schocks)", vcVal = "--";
             if (shockCount >= 3) {
                 if (vectorChangeDone) {
@@ -1238,17 +1145,14 @@
             }
             addTrafficRow(trafficBody, "Vector Change (refraktäres VF)", "Direkt nach 3. erfolglosem Schock", vcVal, vcStatus, vcText);
 
-            // BENCHMARK 4: Bewusstseinskontrolle
             let bewStatus = benchmarks.bewusstsein ? "pill-green" : "pill-gray";
             let bewText = benchmarks.bewusstsein ? "DURCHGEFÜHRT" : "OFFEN";
             addTrafficRow(trafficBody, "Bewusstseinskontrolle", "Erfolgt", benchmarks.bewusstsein ? "Ja" : "Nein", bewStatus, bewText);
 
-            // BENCHMARK 5: Atemkontrolle
             let atmStatus = benchmarks.atmung ? "pill-green" : "pill-gray";
             let atmText = benchmarks.atmung ? "DURCHGEFÜHRT" : "OFFEN";
             addTrafficRow(trafficBody, "Atemkontrolle", "Max. 10 Sekunden", benchmarks.atmung ? "Ja" : "Nein", atmStatus, atmText);
 
-            // BENCHMARK 6: Hands-Off-Zeiten
             let hoStatus = "pill-green", hoText = "KEINE KRITISCHEN ZEITEN", hoVal = "Keine erfasst";
             if (handsOffList.length > 0) {
                 const totalSec = handsOffList.reduce((acc, cur) => acc + cur.duration, 0);
@@ -1260,12 +1164,10 @@
             }
             addTrafficRow(trafficBody, "Hands-Off-Zeiten (KO-Kriterium)", "<= 5 Sekunden pro Pause", hoVal, hoStatus, hoText);
 
-            // BENCHMARK 7: Beatmung mit Sauerstoff
             let ventStatus = benchmarks.beatmung === null ? "pill-gray" : (benchmarks.beatmung ? "pill-green" : "pill-red");
             let ventText = benchmarks.beatmung === null ? "Nicht erfasst" : (benchmarks.beatmung ? "O2 KORREKT" : "OHNE O2");
             addTrafficRow(trafficBody, "Erste Beatmung", "Mit O2-Versorgung", benchmarks.beatmung ? "Mit O2" : "Ohne O2", ventStatus, ventText);
 
-            // BENCHMARK 8: Abtransport Spielfeld (SOP 915)
             let trStatus = "pill-gray", trText = "Nicht erfasst", trVal = "--";
             if (benchmarks.transportField) {
                 trStatus = benchmarks.transportField.ok ? "pill-green" : "pill-red";
@@ -1274,13 +1176,11 @@
             }
             addTrafficRow(trafficBody, "Abtransport Spielfeld (SOP 915)", "< 6 Minuten", trVal, trStatus, trText);
 
-            // BENCHMARK 9: Medikamenten-Algorithmus
             let medStatus = benchmarks.medicationErrors.length === 0 ? "pill-green" : "pill-red";
             let medText = benchmarks.medicationErrors.length === 0 ? "ALGORITHMUSKONFORM" : `${benchmarks.medicationErrors.length} ABWEICHUNG(EN)`;
             let medVal = `Adr: ${adrenalineCount}x, Amio: ${amiodaroneTotal}mg, Infusion: ${infusionCount}x`;
             addTrafficRow(trafficBody, "Medikamente & Infusion", "Pfadspezifisch & max. 2x Infusion", medVal, medStatus, medText);
 
-            // TIMELINE
             const reversedEntries = [...logEntries].reverse();
             reversedEntries.forEach(e => {
                 const tr = document.createElement("tr");
