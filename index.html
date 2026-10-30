@@ -772,7 +772,7 @@
                 const isOverLimit = duration > 5;
                 const status = isOverLimit ? "status-bad" : "status-ok";
                 const note = isOverLimit 
-                    ? `Achtung: ${duration}s Hands-Off (Vorgabe: <= 5s, nicht algorithmuskonform!)`[cite: 2]
+                    ? `Achtung: ${duration}s Hands-Off (Vorgabe: <= 5s, nicht algorithmuskonform!)`
                     : `Unterbrechung: ${duration}s (Toleranzbereich <= 5s eingehalten)`;
 
                 handsOffList.push({ duration: duration, time: getTimestampStr(), ok: !isOverLimit });
@@ -787,12 +787,12 @@
 
         function logBewusstseinskontrolle() {
             benchmarks.bewusstsein = true;
-            logEntry("Bewusstseinskontrolle durchgeführt", "status-ok", "Ansprechen, Berühren, Schmerzreiz");[cite: 1]
+            logEntry("Bewusstseinskontrolle durchgeführt", "status-ok", "Ansprechen, Berühren, Schmerzreiz");
         }
 
         function logAtemkontrolle() {
             benchmarks.atmung = true;
-            logEntry("Atemkontrolle durchgeführt", "status-ok", "Atemwege freigemacht & max. 10s beurteilt");[cite: 1]
+            logEntry("Atemkontrolle durchgeführt", "status-ok", "Atemwege freigemacht & max. 10s beurteilt");
         }
 
         function logHdmStart() {
@@ -805,8 +805,8 @@
             const isOk = diff <= 30;
             benchmarks.hdmStart = { ok: isOk, timeDiff: diff };
             const status = isOk ? "status-ok" : "status-bad";
-            const note = `${diff} Sekunden ab Eintreffen (Vorgabe: <= 30s)`;[cite: 3]
-            logEntry("Beginn Herzdruckmassage (HDM)", status, note);[cite: 1, 3]
+            const note = `${diff} Sekunden ab Eintreffen (Vorgabe: <= 30s)`;
+            logEntry("Beginn Herzdruckmassage (HDM)", status, note);
         }
 
         function openVentilationModal() {
@@ -816,13 +816,13 @@
             closeModal('modal-vent');
             benchmarks.beatmung = withO2;
             const status = withO2 ? "status-ok" : "status-bad";
-            const note = withO2 ? "Mit Sauerstoff verabreicht" : "Achtung: Ohne Sauerstoffanschluss durchgeführt";[cite: 1]
+            const note = withO2 ? "Mit Sauerstoff verabreicht" : "Achtung: Ohne Sauerstoffanschluss durchgeführt";
             logEntry("Erste Beatmung", status, note);
         }
 
         function openAnalysisModal(isFirst) {
             isFirstAnalysisPending = isFirst;
-            document.getElementById("modal-analysis-title").innerText = isFirst ? "Erste Rhythmusanalyse" : "Folgeanalyse (Rhythmuscheck)";[cite: 1]
+            document.getElementById("modal-analysis-title").innerText = isFirst ? "Erste Rhythmusanalyse" : "Folgeanalyse (Rhythmuscheck)";
             document.getElementById("modal-analysis").style.display = "flex";
         }
 
@@ -848,19 +848,19 @@
                     const isOk = diff <= 60;
                     benchmarks.analyse = { ok: isOk, timeDiff: diff, shockable: shockAdvised };
                     const status = isOk ? "status-ok" : "status-bad";
-                    const note = `${diff}s ab Eintreffen (Vorgabe: <= 60s) | Pfad: ${shockAdvised ? '1 (Schock empfohlen)' : '2 (Kein Schock)'}`;[cite: 1, 3]
+                    const note = `${diff}s ab Eintreffen (Vorgabe: <= 60s) | Pfad: ${shockAdvised ? '1 (Schock empfohlen)' : '2 (Kein Schock)'}`;
                     logEntry("Erste Rhythmusanalyse", status, note);
                 }
             } else {
-                const resultText = shockAdvised ? "Pfad 1 (Schock empfohlen)" : "Pfad 2 (Kein Schock empfohlen)";[cite: 1]
-                logEntry("Folgeanalyse (Rhythmuscheck)", "status-neutral", `Ergebnis: ${resultText}`);[cite: 1]
+                const resultText = shockAdvised ? "Pfad 1 (Schock empfohlen)" : "Pfad 2 (Kein Schock empfohlen)";
+                logEntry("Folgeanalyse (Rhythmuscheck)", "status-neutral", `Ergebnis: ${resultText}`);
             }
         }
 
         function logShockDelivered() {
             shockCount++;
             document.getElementById("val-shocks").innerText = shockCount;
-            logEntry(`Defibrillation: Schock #${shockCount} abgegeben`, "status-ok", `Gesamtschocks: ${shockCount}`);[cite: 1]
+            logEntry(`Defibrillation: Schock #${shockCount} abgegeben`, "status-ok", `Gesamtschocks: ${shockCount}`);
         }
 
         function logVectorChange() {
@@ -892,7 +892,7 @@
         }
 
         function logHdmSwitch() {
-            logEntry("Turnuswechsel Herzdruckmassage", "status-ok", "Helferwechsel durchgeführt");[cite: 1, 2]
+            logEntry("Turnuswechsel Herzdruckmassage", "status-ok", "Helferwechsel durchgeführt");
         }
 
         function openAirwayModal() {
@@ -900,7 +900,7 @@
         }
         function confirmAirway(toolName) {
             closeModal('modal-airway');
-            logEntry(`Airwaymanagement: ${toolName}`, "status-ok", "Atemweg gesichert / optimiert");[cite: 1, 2]
+            logEntry(`Airwaymanagement: ${toolName}`, "status-ok", "Atemweg gesichert / optimiert");
         }
 
         function openMedsModal() {
@@ -994,7 +994,7 @@
         }
         function confirmRosc(type) {
             closeModal('modal-rosc');
-            logEntry(`Kreislaufstabilisierung: ${type}`, "status-ok", "Spontankreislauf erfasst");[cite: 2]
+            logEntry(`Kreislaufstabilisierung: ${type}`, "status-ok", "Spontankreislauf erfasst");
         }
 
         function logTactical(msg, status, note) {
@@ -1009,8 +1009,8 @@
             const isOk = diff <= 360; 
             benchmarks.transportField = { ok: isOk, timeDiff: diff };
             const status = isOk ? "status-ok" : "status-bad";
-            const note = `${Math.floor(diff/60)}m ${diff%60}s ab Eintreffen (Vorgabe: < 6 min)`;[cite: 3]
-            logEntry("Abtransport vom Spielfeld", status, note);[cite: 3]
+            const note = `${Math.floor(diff/60)}m ${diff%60}s ab Eintreffen (Vorgabe: < 6 min)`;
+            logEntry("Abtransport vom Spielfeld", status, note);
         }
 
         function logGeneric(title, status, note) {
@@ -1209,6 +1209,6 @@
         function closeReport() {
             document.getElementById("report-overlay").style.display = "none";
         }
-    </script>
+</script>
 </body>
 </html>
