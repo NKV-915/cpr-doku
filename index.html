@@ -78,28 +78,29 @@
             display: flex;
             align-items: center;
             justify-content: space-between;
-            padding: 0 16px;
+            padding: 0 14px;
             flex-shrink: 0;
         }
         #timer-display {
             font-family: 'SF Mono', SFMono-Regular, Consolas, 'Liberation Mono', Menlo, monospace;
-            font-size: 32px;
+            font-size: 30px;
             font-weight: 900;
             color: #58a6ff;
             letter-spacing: 1px;
         }
         .header-stats {
             display: flex;
-            gap: 8px;
+            gap: 6px;
             align-items: center;
         }
         .stat-badge {
             background: #21262d;
             border: 1px solid var(--card-border);
-            padding: 5px 10px;
+            padding: 5px 8px;
             border-radius: 8px;
-            font-size: 12px;
+            font-size: 13px;
             font-weight: 700;
+            white-space: nowrap;
         }
 
         /* HANDS OFF BUTTON ACTIVE ANIMATION */
@@ -282,7 +283,7 @@
             background: #21262d;
             border: 1px solid var(--card-border);
             color: #fff;
-            padding: 12px 16px;
+            padding: 12px 14px;
             font-size: 15px;
             font-weight: 700;
             border-radius: 10px;
@@ -426,20 +427,21 @@
 
     <!-- HEADER / TIMER, STATS & CONTROLS -->
     <header id="app-header">
-        <div style="display: flex; align-items: center; gap: 16px;">
+        <div style="display: flex; align-items: center; gap: 14px;">
             <div id="timer-display">00:00</div>
             <div class="header-stats">
-                <span class="stat-badge">Pfad: <strong id="val-rhythm" style="color:#8b949e;">Offen</strong></span>
-                <span class="stat-badge">⚡ Schocks: <strong id="val-shocks" style="color:#da3633;">0</strong></span>
-                <span class="stat-badge">🔀 VC: <strong id="val-vc" style="color:#1abc9c;">Nein</strong></span>
-                <span class="stat-badge">💉 Adr/Amio: <strong id="val-adr-amio" style="color:#d29922;">0/0</strong></span>
-                <span class="stat-badge">💧 Infusion: <strong id="val-infusion" style="color:#1f6feb;">0 ml</strong></span>
+                <span class="stat-badge">Pfad: <strong id="val-rhythm" style="color:#8b949e;">?</strong></span>
+                <span class="stat-badge">⚡ <strong id="val-shocks" style="color:#da3633;">0</strong></span>
+                <span class="stat-badge">🔀 <strong id="val-vc" style="color:#8b949e;">?</strong></span>
+                <span class="stat-badge">Adr: <strong id="val-adr" style="color:#d29922;">0</strong></span>
+                <span class="stat-badge">Amio: <strong id="val-amio" style="color:#8957e5;">0 mg</strong></span>
+                <span class="stat-badge">Inf: <strong id="val-infusion" style="color:#1f6feb;">0 ml</strong></span>
             </div>
         </div>
         <div style="display: flex; gap: 8px; align-items: center;">
-            <button id="btn-handsoff" class="modal-btn" style="background:#da3633; color:#fff;" onclick="toggleHandsOff()">⏱️ Hands-Off Start</button>
+            <button id="btn-handsoff" class="modal-btn" style="background:#da3633; color:#fff;" onclick="toggleHandsOff()">⏱️ Hands-Off</button>
             <button class="modal-btn" style="background:#d29922; color:#000;" onclick="openFlagModal()">🚩 Notiz</button>
-            <button class="modal-btn" style="background:var(--primary);" onclick="openReport()">📊 Protokoll &amp; PDF</button>
+            <button class="modal-btn" style="background:#bd2c00; color:#fff;" onclick="endScenario()">Ende</button>
         </div>
     </header>
 
@@ -588,7 +590,7 @@
 
     </div>
 
-    <!-- MODAL: ANALYSE ERGEBNIS (Schockbar vs. Nicht-schockbar) -->
+    <!-- MODAL: ANALYSE ERGEBNIS -->
     <div id="modal-analysis" class="modal-overlay">
         <div class="modal-box">
             <h3 id="modal-analysis-title">Rhythmusanalyse</h3>
@@ -679,8 +681,9 @@
                 <h1 style="margin: 0; font-size: 24px;">CPR Auswertungs- &amp; Prüfungsprotokoll</h1>
                 <p style="margin: 4px 0 0 0; color: #444; font-size: 13px;">Basic Life Support, Halbautomatischer Defibrillator &amp; SOP 915 Spielfeld</p>
             </div>
-            <div class="no-print">
-                <button class="modal-btn" style="background:#28a745; margin-right: 8px;" onclick="window.print()">🖨️ Als PDF drucken / sichern</button>
+            <div class="no-print" style="display: flex; gap: 8px;">
+                <button class="modal-btn" style="background:#28a745;" onclick="window.print()">🖨️ Als PDF drucken / sichern</button>
+                <button class="modal-btn" style="background:#1f6feb;" onclick="resetToStartMenu()">🏠 Zum Anfangsmenü</button>
                 <button class="modal-btn" style="background:#333;" onclick="closeReport()">✕ Schließen</button>
             </div>
         </div>
@@ -729,7 +732,7 @@
         let lastAdrenalineTime = null;
 
         // RHYTHMUS & VECTOR CHANGE
-        let currentRhythmCategory = null; // 'shockable' | 'non_shockable'
+        let currentRhythmCategory = null; 
         let isFirstAnalysisPending = false;
         let vectorChangeDone = false;
         let vectorChangeShockAt = null;
@@ -813,7 +816,7 @@
             document.getElementById(id).style.display = "none";
         }
 
-        // HANDS-OFF ZEITEN TOGGLE
+        // HANDS-OFF TOGGLE (Ohne die Wörter Start / Stop)
         function toggleHandsOff() {
             const btn = document.getElementById("btn-handsoff");
 
@@ -821,11 +824,11 @@
                 isHandsOffActive = true;
                 handsOffStartTime = Date.now();
                 btn.classList.add("handsoff-active");
-                btn.innerText = "🛑 Hands-Off Stopp (00s)";
+                btn.innerText = "⏱️ Hands-Off (00s)";
 
                 handsOffInterval = setInterval(() => {
                     const sec = Math.floor((Date.now() - handsOffStartTime) / 1000).toString().padStart(2, '0');
-                    btn.innerText = `🛑 Hands-Off Stopp (${sec}s)`;
+                    btn.innerText = `⏱️ Hands-Off (${sec}s)`;
                 }, 1000);
 
             } else {
@@ -833,12 +836,12 @@
                 clearInterval(handsOffInterval);
                 const duration = Math.round((Date.now() - handsOffStartTime) / 1000);
                 btn.classList.remove("handsoff-active");
-                btn.innerText = "⏱️ Hands-Off Start";
+                btn.innerText = "⏱️ Hands-Off";
 
                 const isOverLimit = duration > 5;
                 const status = isOverLimit ? "status-bad" : "status-ok";
                 const note = isOverLimit 
-                    ? `Achtung: ${duration}s Hands-Off (Vorgabe: <= 5s, nicht algorithmuskonform!)` 
+                    ? `Achtung: ${duration}s Hands-Off (Vorgabe: <= 5s, nicht algorithmuskonform!)`[cite: 2]
                     : `Unterbrechung: ${duration}s (Toleranzbereich <= 5s eingehalten)`;
 
                 handsOffList.push({ duration: duration, time: getTimestampStr(), ok: !isOverLimit });
@@ -855,13 +858,13 @@
         // (2) BEWUSSTSEINSKONTROLLE
         function logBewusstseinskontrolle() {
             benchmarks.bewusstsein = true;
-            logEntry("Bewusstseinskontrolle durchgeführt", "status-ok", "Ansprechen, Berühren, Schmerzreiz");
+            logEntry("Bewusstseinskontrolle durchgeführt", "status-ok", "Ansprechen, Berühren, Schmerzreiz");[cite: 1]
         }
 
         // (3) ATEMKONTROLLE
         function logAtemkontrolle() {
             benchmarks.atmung = true;
-            logEntry("Atemkontrolle durchgeführt", "status-ok", "Atemwege freigemacht & max. 10s beurteilt");
+            logEntry("Atemkontrolle durchgeführt", "status-ok", "Atemwege freigemacht & max. 10s beurteilt");[cite: 1]
         }
 
         // (4) BEGINN HDM
@@ -875,8 +878,8 @@
             const isOk = diff <= 30;
             benchmarks.hdmStart = { ok: isOk, timeDiff: diff };
             const status = isOk ? "status-ok" : "status-bad";
-            const note = `${diff} Sekunden ab Eintreffen (Vorgabe: <= 30s)`;
-            logEntry("Beginn Herzdruckmassage (HDM)", status, note);
+            const note = `${diff} Sekunden ab Eintreffen (Vorgabe: <= 30s)`;[cite: 3]
+            logEntry("Beginn Herzdruckmassage (HDM)", status, note);[cite: 1, 3]
         }
 
         // (5) ERSTE BEATMUNG
@@ -887,14 +890,14 @@
             closeModal('modal-vent');
             benchmarks.beatmung = withO2;
             const status = withO2 ? "status-ok" : "status-bad";
-            const note = withO2 ? "Mit Sauerstoff verabreicht" : "Achtung: Ohne Sauerstoffanschluss durchgeführt";
+            const note = withO2 ? "Mit Sauerstoff verabreicht" : "Achtung: Ohne Sauerstoffanschluss durchgeführt";[cite: 1]
             logEntry("Erste Beatmung", status, note);
         }
 
         // (6a & 6b) RHYTHMUSANALYSEN
         function openAnalysisModal(isFirst) {
             isFirstAnalysisPending = isFirst;
-            document.getElementById("modal-analysis-title").innerText = isFirst ? "Erste Rhythmusanalyse" : "Folgeanalyse (Rhythmuscheck)";
+            document.getElementById("modal-analysis-title").innerText = isFirst ? "Erste Rhythmusanalyse" : "Folgeanalyse (Rhythmuscheck)";[cite: 1]
             document.getElementById("modal-analysis").style.display = "flex";
         }
 
@@ -902,18 +905,17 @@
             closeModal('modal-analysis');
             currentRhythmCategory = shockAdvised ? 'shockable' : 'non_shockable';
             
-            // Header Badge aktualisieren
+            // Header Pfad aktualisieren: 1 = Schockbar, 2 = Nicht-schockbar
             const rBadge = document.getElementById("val-rhythm");
             if (shockAdvised) {
-                rBadge.innerText = "Schockbar (VF)";
+                rBadge.innerText = "1";
                 rBadge.style.color = "#da3633";
             } else {
-                rBadge.innerText = "Nicht-schockbar (Asy)";
+                rBadge.innerText = "2";
                 rBadge.style.color = "#238636";
             }
 
             if (isFirstAnalysisPending) {
-                // Benchmark Check (< 1 min / 60s)
                 if (arrivedTime === null) {
                     logEntry("Erste Rhythmusanalyse", "status-bad", "Achtung: Eintreffen nicht protokolliert!");
                     benchmarks.analyse = { ok: false, timeDiff: null, shockable: shockAdvised };
@@ -922,13 +924,12 @@
                     const isOk = diff <= 60;
                     benchmarks.analyse = { ok: isOk, timeDiff: diff, shockable: shockAdvised };
                     const status = isOk ? "status-ok" : "status-bad";
-                    const note = `${diff}s ab Eintreffen (Vorgabe: <= 60s) | Ergebnis: ${shockAdvised ? '⚡ Schock empfohlen (VF/pVT)' : '🛑 Kein Schock (Asystolie/PEA)'}`;
+                    const note = `${diff}s ab Eintreffen (Vorgabe: <= 60s) | Pfad: ${shockAdvised ? '1 (Schock empfohlen)' : '2 (Kein Schock)'}`;[cite: 1, 3]
                     logEntry("Erste Rhythmusanalyse", status, note);
                 }
             } else {
-                // Folgeanalyse loggen
-                const resultText = shockAdvised ? "⚡ Schock empfohlen (Kammerflimmern/pVT)" : "🛑 Kein Schock empfohlen (Asystolie/PEA)";
-                logEntry("Folgeanalyse (Rhythmuscheck)", "status-neutral", `Ergebnis: ${resultText}`);
+                const resultText = shockAdvised ? "Pfad 1 (Schock empfohlen)" : "Pfad 2 (Kein Schock empfohlen)";[cite: 1]
+                logEntry("Folgeanalyse (Rhythmuscheck)", "status-neutral", `Ergebnis: ${resultText}`);[cite: 1]
             }
         }
 
@@ -936,23 +937,33 @@
         function logShockDelivered() {
             shockCount++;
             document.getElementById("val-shocks").innerText = shockCount;
-            logEntry(`Defibrillation: Schock #${shockCount} abgegeben`, "status-ok", `Gesamtschocks: ${shockCount}`);
+            logEntry(`Defibrillation: Schock #${shockCount} abgegeben`, "status-ok", `Gesamtschocks: ${shockCount}`);[cite: 1]
         }
 
-        // (7b) VECTOR CHANGE
+        // (7b) VECTOR CHANGE (Nach Schock 3 = korrekt, Schock 4+ = verspätet)
         function logVectorChange() {
             vectorChangeDone = true;
             vectorChangeShockAt = shockCount;
-            document.getElementById("val-vc").innerText = `Ja (#${shockCount})`;
-            document.getElementById("val-vc").style.color = "#3fb950";
 
             let note = "";
             let status = "status-ok";
-            if (shockCount >= 3) {
-                note = `Indikation erfüllt: Vector Change nach ${shockCount}. Schock bei refraktärem Kammerflimmern durchgeführt`;
+            const vcBadge = document.getElementById("val-vc");
+
+            if (shockCount === 3) {
+                status = "status-ok";
+                note = "Indikation optimal erfüllt: Vector Change direkt nach dem 3. Schock durchgeführt";
+                vcBadge.innerText = "✓";
+                vcBadge.style.color = "#3fb950";
+            } else if (shockCount >= 4) {
+                status = "status-bad";
+                note = `Abweichung: Vector Change verspätet erst nach Schock #${shockCount} durchgeführt (Soll: direkt nach 3. Schock)!`;
+                vcBadge.innerText = "✗";
+                vcBadge.style.color = "#da3633";
             } else {
-                status = "status-neutral";
-                note = `Vector Change frühzeitig vor dem 3. Schock durchgeführt (Aktuell: Schock #${shockCount})`;
+                status = "status-bad";
+                note = `Abweichung: Vector Change verfrüht vor dem 3. Schock durchgeführt (Aktuell: Schock #${shockCount})`;
+                vcBadge.innerText = "✗";
+                vcBadge.style.color = "#da3633";
             }
 
             logEntry("🔀 Vector Change durchgeführt", status, note);
@@ -960,7 +971,7 @@
 
         // (8) WECHSEL HDM
         function logHdmSwitch() {
-            logEntry("Turnuswechsel Herzdruckmassage", "status-ok", "Helferwechsel durchgeführt");
+            logEntry("Turnuswechsel Herzdruckmassage", "status-ok", "Helferwechsel durchgeführt");[cite: 1, 2]
         }
 
         // (9) WEITERES AIRWAYMANAGEMENT
@@ -969,7 +980,7 @@
         }
         function confirmAirway(toolName) {
             closeModal('modal-airway');
-            logEntry(`Airwaymanagement: ${toolName}`, "status-ok", "Atemweg gesichert / optimiert");
+            logEntry(`Airwaymanagement: ${toolName}`, "status-ok", "Atemweg gesichert / optimiert");[cite: 1, 2]
         }
 
         // (12) MEDIKAMENTE & INFUSION
@@ -983,10 +994,9 @@
 
             if (medName === "Adrenalin 1 mg") {
                 adrenalineCount++;
-                document.getElementById("val-adr-amio").innerText = `${adrenalineCount}/${amiodaroneTotal}`;
+                document.getElementById("val-adr").innerText = adrenalineCount;
                 
                 if (currentRhythmCategory === 'non_shockable') {
-                    // Nicht-schockbar: Sofort / frühestmöglich indiziert
                     if (adrenalineCount === 1) {
                         note = "Früheste Gabe bei nicht-schockbarem Rhythmus (Asystolie/PEA) korrekt indiziert";
                     } else if (lastAdrenalineTime !== null) {
@@ -999,7 +1009,6 @@
                         }
                     }
                 } else {
-                    // Schockbar: Erst nach dem 3. Schock
                     if (shockCount < 3) {
                         isAlgOk = false;
                         note = `Warnung: Adrenalin vor dem 3. Schock gegeben (Aktuell Schock #${shockCount})!`;
@@ -1019,7 +1028,7 @@
 
             } else if (medName === "Amiodaron 300 mg") {
                 amiodaroneTotal += 300;
-                document.getElementById("val-adr-amio").innerText = `${adrenalineCount}/${amiodaroneTotal}`;
+                document.getElementById("val-amio").innerText = `${amiodaroneTotal} mg`;
                 
                 if (currentRhythmCategory === 'non_shockable') {
                     isAlgOk = false;
@@ -1033,7 +1042,7 @@
 
             } else if (medName === "Amiodaron 150 mg") {
                 amiodaroneTotal += 150;
-                document.getElementById("val-adr-amio").innerText = `${adrenalineCount}/${amiodaroneTotal}`;
+                document.getElementById("val-amio").innerText = `${amiodaroneTotal} mg`;
                 
                 if (currentRhythmCategory === 'non_shockable') {
                     isAlgOk = false;
@@ -1067,7 +1076,7 @@
         }
         function confirmRosc(type) {
             closeModal('modal-rosc');
-            logEntry(`Kreislaufstabilisierung: ${type}`, "status-ok", "Spontankreislauf erfasst");
+            logEntry(`Kreislaufstabilisierung: ${type}`, "status-ok", "Spontankreislauf erfasst");[cite: 2]
         }
 
         // TAKTISCH (SOP 915)
@@ -1083,8 +1092,8 @@
             const isOk = diff <= 360; 
             benchmarks.transportField = { ok: isOk, timeDiff: diff };
             const status = isOk ? "status-ok" : "status-bad";
-            const note = `${Math.floor(diff/60)}m ${diff%60}s ab Eintreffen (Vorgabe: < 6 min)`;
-            logEntry("Abtransport vom Spielfeld", status, note);
+            const note = `${Math.floor(diff/60)}m ${diff%60}s ab Eintreffen (Vorgabe: < 6 min)`;[cite: 3]
+            logEntry("Abtransport vom Spielfeld", status, note);[cite: 3]
         }
 
         function logGeneric(title, status, note) {
@@ -1102,6 +1111,76 @@
                 document.getElementById("flag-note-text").value = "";
             }
             closeModal('modal-flag');
+        }
+
+        // SZENARIO BEENDEN
+        function endScenario() {
+            if (isHandsOffActive) {
+                toggleHandsOff();
+            }
+            clearInterval(timerInterval);
+            logEntry("Szenario beendet", "status-neutral", `Gesamtlaufzeit: ${getTimestampStr()}`);
+            openReport();
+        }
+
+        // ALLES ZURÜCKSETZEN & ZUM ANFANGSMENÜ
+        function resetToStartMenu() {
+            closeReport();
+            clearInterval(timerInterval);
+            clearInterval(handsOffInterval);
+
+            // Variablen zurücksetzen
+            scenarioStartTime = null;
+            timerInterval = null;
+            elapsedSeconds = 0;
+            arrivedTime = null;
+            shockCount = 0;
+            adrenalineCount = 0;
+            amiodaroneTotal = 0;
+            infusionCount = 0;
+            lastAdrenalineTime = null;
+
+            currentRhythmCategory = null;
+            isFirstAnalysisPending = false;
+            vectorChangeDone = false;
+            vectorChangeShockAt = null;
+
+            isHandsOffActive = false;
+            handsOffStartTime = 0;
+            handsOffInterval = null;
+            handsOffList = [];
+
+            logEntries = [];
+            benchmarks = {
+                bewusstsein: null,
+                atmung: null,
+                hdmStart: null,
+                beatmung: null,
+                analyse: null,
+                transportField: null,
+                medicationErrors: []
+            };
+
+            // DOM-Elemente zurücksetzen
+            document.getElementById("timer-display").innerText = "00:00";
+            document.getElementById("val-rhythm").innerText = "?";
+            document.getElementById("val-rhythm").style.color = "#8b949e";
+            document.getElementById("val-shocks").innerText = "0";
+            document.getElementById("val-vc").innerText = "?";
+            document.getElementById("val-vc").style.color = "#8b949e";
+            document.getElementById("val-adr").innerText = "0";
+            document.getElementById("val-amio").innerText = "0 mg";
+            document.getElementById("val-infusion").innerText = "0 ml";
+            
+            const hoBtn = document.getElementById("btn-handsoff");
+            hoBtn.classList.remove("handsoff-active");
+            hoBtn.innerText = "⏱️ Hands-Off";
+
+            document.getElementById("log-list").innerHTML = '<div style="color: #666; text-align: center; margin-top: 30px; font-size: 14px;">Warte auf Szenario-Start...</div>';
+            document.getElementById("log-count").innerText = "0 Einträge";
+
+            // Start Overlay wieder anzeigen
+            document.getElementById("start-overlay").style.display = "flex";
         }
 
         // PROTOKOLL / REPORT RENDERING
@@ -1125,7 +1204,7 @@
             if (benchmarks.analyse) {
                 anaStatus = benchmarks.analyse.ok ? "pill-green" : "pill-red";
                 anaText = benchmarks.analyse.ok ? "KORREKT" : "VERZÖGERT";
-                const typeText = benchmarks.analyse.shockable ? "Schockbar" : "Nicht-schockbar";
+                const typeText = benchmarks.analyse.shockable ? "Pfad 1 (Schockbar)" : "Pfad 2 (Nicht-schockbar)";
                 anaVal = `${benchmarks.analyse.timeDiff} s (${typeText})`;
             }
             addTrafficRow(trafficBody, "Erste Rhythmusanalyse", "< 60 Sekunden (1 Min.)", anaVal, anaStatus, anaText);
@@ -1134,20 +1213,30 @@
             let vcStatus = "pill-gray", vcText = "Nicht indiziert (< 3 Schocks)", vcVal = "--";
             if (shockCount >= 3) {
                 if (vectorChangeDone) {
-                    vcStatus = "pill-green";
-                    vcText = "KORREKT DURCHGEFÜHRT";
-                    vcVal = `Nach Schock #${vectorChangeShockAt}`;
+                    if (vectorChangeShockAt === 3) {
+                        vcStatus = "pill-green";
+                        vcText = "KORREKT DURCHGEFÜHRT";
+                        vcVal = "Nach Schock #3";
+                    } else if (vectorChangeShockAt >= 4) {
+                        vcStatus = "pill-red";
+                        vcText = "ABWEICHUNG (VERSPÄTET)";
+                        vcVal = `Erst nach Schock #${vectorChangeShockAt} (Soll: nach Schock #3)`;
+                    } else {
+                        vcStatus = "pill-red";
+                        vcText = "ABWEICHUNG (ZU FRÜH)";
+                        vcVal = `Bereits nach Schock #${vectorChangeShockAt}`;
+                    }
                 } else {
                     vcStatus = "pill-red";
                     vcText = "NICHT ERFOLGT";
                     vcVal = "Indikation nach 3. Schock verfehlt";
                 }
             } else if (vectorChangeDone) {
-                vcStatus = "pill-green";
-                vcText = "FRÜHZEITIG DURCHGEFÜHRT";
-                vcVal = `Bei Schock #${vectorChangeShockAt}`;
+                vcStatus = "pill-red";
+                vcText = "ABWEICHUNG (ZU FRÜH)";
+                vcVal = `Bereits nach Schock #${vectorChangeShockAt}`;
             }
-            addTrafficRow(trafficBody, "Vector Change (refraktäres VF)", "Nach 3. erfolglosem Schock", vcVal, vcStatus, vcText);
+            addTrafficRow(trafficBody, "Vector Change (refraktäres VF)", "Direkt nach 3. erfolglosem Schock", vcVal, vcStatus, vcText);
 
             // BENCHMARK 4: Bewusstseinskontrolle
             let bewStatus = benchmarks.bewusstsein ? "pill-green" : "pill-gray";
